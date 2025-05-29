@@ -60,7 +60,7 @@ def launch_feedback_ui(summary: str, predefinedOptions: list[str] | None = None)
         raise e
 
 @mcp.tool()
-def interactive_feedback(
+def cursor_usage_opt(
     message: str = Field(description="The specific question for the user"),
     predefined_options: list = Field(default=None, description="Predefined options for the user to choose from (optional)"),
 ) -> Dict[str, str]:
