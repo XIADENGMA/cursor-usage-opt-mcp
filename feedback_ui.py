@@ -14,7 +14,7 @@ from PySide6.QtWidgets import (
     QFrame
 )
 from PySide6.QtCore import Qt, Signal, QObject, QTimer, QSettings
-from PySide6.QtGui import QTextCursor, QIcon, QKeyEvent, QPalette, QColor, QFont
+from PySide6.QtGui import QTextCursor, QIcon, QKeyEvent, QPalette, QColor, QFont, QClipboard
 
 class FeedbackResult(TypedDict):
     cursor_usage_opt: str
@@ -192,22 +192,65 @@ class FeedbackUI(QMainWindow):
         self.feedback_text.setMinimumHeight(7 * row_height + padding)
 
         self.feedback_text.setPlaceholderText("请在此输入您的反馈 (Ctrl+Enter 提交)")
-        submit_button = QPushButton("再次发送请求(&S)")
+
+        # 创建按钮布局
+        button_layout = QHBoxLayout()
+
+        # 插入代码按钮
+        insert_code_button = QPushButton("插入代码(&C)")
         # 设置按钮字体
         button_font = QFont()
         button_font.setPointSize(14)  # 增大按钮字体
         button_font.setFamily("Microsoft YaHei, SimHei, Arial Unicode MS, sans-serif")
+        insert_code_button.setFont(button_font)
+        insert_code_button.clicked.connect(self._insert_code_from_clipboard)
+
+        submit_button = QPushButton("再次发送请求(&S)")
+        # 设置按钮字体
         submit_button.setFont(button_font)
         submit_button.clicked.connect(self._submit_feedback)
 
+        # 添加按钮到布局
+        button_layout.addWidget(insert_code_button)
+        button_layout.addWidget(submit_button)
+
         feedback_layout.addWidget(self.feedback_text)
-        feedback_layout.addWidget(submit_button)
+        feedback_layout.addLayout(button_layout)
 
         # Set minimum height for feedback_group
-        self.feedback_group.setMinimumHeight(self.description_label.sizeHint().height() + self.feedback_text.minimumHeight() + submit_button.sizeHint().height() + feedback_layout.spacing() * 2 + feedback_layout.contentsMargins().top() + feedback_layout.contentsMargins().bottom() + 10)
+        self.feedback_group.setMinimumHeight(self.description_label.sizeHint().height() + self.feedback_text.minimumHeight() + button_layout.sizeHint().height() + feedback_layout.spacing() * 2 + feedback_layout.contentsMargins().top() + feedback_layout.contentsMargins().bottom() + 10)
 
         # Add widgets
         layout.addWidget(self.feedback_group)
+
+    def _insert_code_from_clipboard(self):
+        """从剪贴板获取内容并插入为代码块格式"""
+        clipboard = QApplication.clipboard()
+        clipboard_text = clipboard.text()
+
+        if clipboard_text:
+            # 获取当前光标位置
+            cursor = self.feedback_text.textCursor()
+            current_text = self.feedback_text.toPlainText()
+
+            # 构建要插入的代码块
+            code_block = f"```\n{clipboard_text}\n```"
+
+            # 如果光标不在文本末尾且当前行不为空，先添加换行
+            if cursor.position() < len(current_text) and current_text:
+                # 检查光标前面是否有内容，如果有且不是换行符，则添加换行
+                if cursor.position() > 0 and not current_text[cursor.position()-1:cursor.position()] == '\n':
+                    code_block = '\n' + code_block
+
+            # 插入代码块
+            cursor.insertText(code_block)
+
+            # 将光标移动到代码块末尾
+            cursor.movePosition(QTextCursor.End)
+            self.feedback_text.setTextCursor(cursor)
+
+            # 聚焦到文本框
+            self.feedback_text.setFocus()
 
     def _submit_feedback(self):
         feedback_text = self.feedback_text.toPlainText().strip()

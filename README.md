@@ -23,11 +23,40 @@ Essentially, this helps your AI assistant _ask for clarification instead of gues
 - **⏱️ Faster Cycles:** Quick confirmations beat debugging wrong guesses.
 - **🎮 Better Collaboration:** Turns one-way instructions into a dialogue, keeping you in control.
 
+## ✨ Features
+
+### 📋 Interactive Feedback Interface
+
+- **Multi-language Support**: Full support for Chinese and other languages with enhanced input method integration
+- **Dark Mode UI**: Professional dark theme with optimized fonts for readability
+- **Predefined Options**: Quick selection from predefined choices for faster decision making
+- **Free-form Text Input**: Detailed feedback with rich text editing capabilities
+
+### 🔧 Code Integration Tools
+
+- **📌 Insert Code Button**: One-click insertion of clipboard content as formatted code blocks
+  - Automatically wraps clipboard content in markdown code blocks (```)
+  - Smart formatting with proper line breaks and indentation
+  - Keyboard shortcut support (Alt+C)
+  - Intelligent cursor positioning for seamless workflow
+
+### ⌨️ Keyboard Shortcuts
+
+- **Ctrl+Enter**: Submit feedback quickly
+- **Alt+C**: Insert code from clipboard
+- **Alt+S**: Submit request (再次发送请求)
+
+### 🎯 Smart Workflow
+
+- **Context Preservation**: Maintains conversation context across feedback cycles
+- **Auto-focus**: Automatic focus management for optimal user experience
+- **Session Memory**: Remembers window position and size preferences
+
 ## 🛠️ Tools
 
 This server exposes the following tool via the Model Context Protocol (MCP):
 
-- `cursor_usage_opt`: Asks the user a question and returns their answer. Can display predefined options.
+- `cursor_usage_opt`: Asks the user a question and returns their answer. Can display predefined options and provides an enhanced interface for code sharing and collaboration.
 
 ## 📦 Installation
 
@@ -68,8 +97,33 @@ This server exposes the following tool via the Model Context Protocol (MCP):
 
 This will ensure your AI assistant always uses this MCP server to request user feedback when the prompt is unclear and before marking the task as completed.
 
-## 🙏 Acknowledgements
+## 🚀 Usage Tips
+
+### 📝 Code Sharing Workflow
+
+1. Copy code snippets to your clipboard
+2. Open the feedback interface via the AI assistant
+3. Click "插入代码" (Insert Code) button or press Alt+C
+4. Code is automatically formatted and inserted as:
+
+```
+your clipboard content
+```
+
+5. Add additional context or instructions
+6. Submit with Ctrl+Enter or click "再次发送请求"
+
+### 🎯 Best Practices
+
+- Use predefined options for quick yes/no decisions
+- Leverage the "Insert Code" feature for sharing examples or error messages
+- Take advantage of keyboard shortcuts for faster interaction
+- The interface remembers your preferences across sessions
+
+## �� Acknowledgements
 
 Developed by Fábio Ferreira ([@fabiomlferreira](https://x.com/fabiomlferreira)).
 
 Enhanced by Pau Oliva ([@pof](https://x.com/pof)) with ideas from Tommy Tong's [interactive-mcp](https://github.com/ttommyth/interactive-mcp).
+
+Further enhanced with Chinese language support and code integration features.
