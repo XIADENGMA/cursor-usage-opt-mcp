@@ -1,80 +1,88 @@
 # 🗣️ Cursor Usage Opt MCP
 
-Simple [MCP Server](https://modelcontextprotocol.io/) to enable a human-in-the-loop workflow in AI-assisted development tools like [Cursor](https://www.cursor.com), [Cline](https://cline.bot) and [Windsurf](https://windsurf.com). This server allows you to easily provide feedback directly to the AI agent, bridging the gap between AI and you.
+简单而强大的 [MCP 服务器](https://modelcontextprotocol.io/)，为 [Cursor](https://www.cursor.com)、[Cline](https://cline.bot) 和 [Windsurf](https://windsurf.com) 等 AI 辅助开发工具提供交互式反馈功能。
 
-**Note:** This server is designed to run locally alongside the MCP client (e.g., Claude Desktop, VS Code), as it needs direct access to the user's operating system to display notifications.
+## 💡 为什么使用这个工具？
 
-## 🖼️ Example
+这个 MCP 服务器允许 AI 模型在完成响应之前暂停并请求澄清。AI 不再需要猜测您的需求，而是打开一个交互式反馈窗口，您可以在其中提供更多详细信息或修正 — 所有这些都在一个请求中完成。
 
-![Interactive Feedback Example](https://raw.githubusercontent.com/poliva/interactive-feedback-mcp/refs/heads/main/.github/example.png)
+**核心优势：**
 
-## 💡 Why Use This?
+- **💰 节省 API 调用：** 在一个请求中进行多轮反馈循环
+- **✅ 减少错误：** 在行动前获得澄清
+- **⏱️ 更快的工作流：** 快速确认胜过调试错误猜测
+- **🌍 全场景支持：** 本地 GUI 和远程 Web 双模式
 
-In environments like Cursor, every prompt you send to the LLM is treated as a distinct request — and each one counts against your monthly limit (e.g. 500 premium requests). This becomes inefficient when you're iterating on vague instructions or correcting misunderstood output, as each follow-up clarification triggers a full new request.
+## ✨ 功能特性
 
-This MCP server introduces a workaround: it allows the model to pause and request clarification before finalizing the response. Instead of completing the request, the model triggers a tool call (`cursor_usage_opt`) that opens an interactive feedback window. You can then provide more detail or ask for changes — and the model continues the session, all within a single request.
+### 🔄 智能双模式
 
-Under the hood, it's just a clever use of tool calls to defer the completion of the request. Since tool calls don't count as separate premium interactions, you can loop through multiple feedback cycles without consuming additional requests.
+- **🖥️ GUI 模式：** 本地环境的原生桌面界面，Apple 风格设计
+- **🌐 Web 模式：** SSH 远程服务器的浏览器界面，支持端口转发
+- **🔄 自动检测：** 根据环境自动选择最佳模式
+- **🔄 持续模式：** Web 界面支持持续接收，实时更新内容
+- **🎯 智能关闭：** 无输入时自动结束持续模式，避免资源浪费
 
-Essentially, this helps your AI assistant _ask for clarification instead of guessing_, without wasting another request. That means fewer wrong answers, better performance, and less wasted API usage.
+### 📝 丰富的交互功能
 
-- **💰 Reduced Premium API Calls:** Avoid wasting expensive API calls generating code based on guesswork.
-- **✅ Fewer Errors:** Clarification \_before\_ action means less incorrect code and wasted time.
-- **⏱️ Faster Cycles:** Quick confirmations beat debugging wrong guesses.
-- **🎮 Better Collaboration:** Turns one-way instructions into a dialogue, keeping you in control.
+- **Markdown 支持：** 完整的 Markdown 渲染和语法高亮
+- **代码插入：** 一键插入剪贴板代码，自动格式化为代码块
+- **预定义选项：** 快速选择预设选项，支持多选
+- **自由文本输入：** 详细的反馈文本编辑，支持大文本
+- **智能关闭：** 多种关闭策略，适应不同使用场景
+- **实时轮询：** 持续模式下每 2 秒检查内容更新
 
-## ✨ Features
+### ⌨️ 键盘快捷键
 
-### 📋 Interactive Feedback Interface
+- **Ctrl+Enter：** 快速提交反馈
+- **Alt+C：** 从剪贴板插入代码
+- **Alt+S：** 提交请求
 
-- **Multi-language Support**: Full support for Chinese and other languages with enhanced input method integration
-- **Dark Mode UI**: Professional dark theme with optimized fonts for readability
-- **Predefined Options**: Quick selection from predefined choices for faster decision making
-- **Free-form Text Input**: Detailed feedback with rich text editing capabilities
+### 🎨 界面设计
 
-### 🔧 Code Integration Tools
+- **🍎 Apple 风格：** 深色主题，SF Pro 字体系统，圆角设计
+- **📱 响应式设计：** Web 版本适配各种屏幕尺寸
+- **🔤 字体优化：** 大字号设计（22px 主体，20px 代码），优化中文显示
+- **🌍 多语言支持：** 完整的中文输入法集成
+- **🎯 状态反馈：** 清晰的状态提示和进度指示
 
-- **📌 Insert Code Button**: One-click insertion of clipboard content as formatted code blocks
-  - Automatically wraps clipboard content in markdown code blocks (```)
-  - Smart formatting with proper line breaks and indentation
-  - Keyboard shortcut support (Alt+C)
-  - Intelligent cursor positioning for seamless workflow
+## 📦 安装
 
-### ⌨️ Keyboard Shortcuts
+### 前置要求
 
-- **Ctrl+Enter**: Submit feedback quickly
-- **Alt+C**: Insert code from clipboard
-- **Alt+S**: Submit request (再次发送请求)
+- **Python 3.11+：** 现代 Python 版本
+- **uv：** 快速的 Python 包管理器
+- **图形环境：** GUI 模式需要（可选）
 
-### 🎯 Smart Workflow
+### 快速安装
 
-- **Context Preservation**: Maintains conversation context across feedback cycles
-- **Auto-focus**: Automatic focus management for optimal user experience
-- **Session Memory**: Remembers window position and size preferences
+```bash
+# 1. 安装 uv 包管理器
+curl -LsSf https://astral.sh/uv/install.sh | sh  # Linux/macOS
+# 或者 pip install uv  # Windows
 
-## 🛠️ Tools
+# 2. 克隆项目
+git clone https://github.com/xiadengma/cursor-usage-opt-mcp.git
+cd cursor-usage-opt-mcp
 
-This server exposes the following tool via the Model Context Protocol (MCP):
+# 3. 安装依赖
+uv sync
+```
 
-- `cursor_usage_opt`: Asks the user a question and returns their answer. Can display predefined options and provides an enhanced interface for code sharing and collaboration.
+### 验证安装
 
-## 📦 Installation
+```bash
+# 运行测试确保一切正常
+uv run python test.py
+```
 
-1.  **Prerequisites:**
-    - Python 3.11 or newer.
-    - [uv](https://github.com/astral-sh/uv) (Python package manager). Install it with:
-      - Windows: `pip install uv`
-      - Linux: `curl -LsSf https://astral.sh/uv/install.sh | sh`
-      - macOS: `brew install uv`
-2.  **Get the code:**
-    - Clone this repository:
-      `git clone https://github.com/xiadengma/cursor-usage-opt-mcp.git`
-    - Or download the source code.
+## ⚙️ 配置
 
-## ⚙️ Configuration
+### MCP 服务器配置
 
-1. Add the following configuration to your `claude_desktop_config.json` (Claude Desktop) or `mcp.json` (Cursor):
-   **Remember to change the `/path/to/cursor-usage-opt-mcp` path to the actual path where you cloned the repository on your system.**
+将以下配置添加到您的 AI 工具配置文件中：
+
+**Claude Desktop** (`claude_desktop_config.json`)：
 
 ```json
 {
@@ -89,41 +97,230 @@ This server exposes the following tool via the Model Context Protocol (MCP):
 }
 ```
 
-2. Add the following to the custom rules in your AI assistant (in Cursor Settings > Rules > User Rules):
+**Cursor** (`mcp.json`)：
 
-> If requirements or instructions are unclear use the tool cursor_usage_opt to ask clarifying questions to the user before proceeding, do not make assumptions. Whenever possible, present the user with predefined options through the cursor_usage_opt MCP tool to facilitate quick decisions.
-
-> Whenever you're about to complete a user request, call the cursor_usage_opt tool to request user feedback before ending the process. If the feedback is empty you can end the request and don't call the tool in loop.
-
-This will ensure your AI assistant always uses this MCP server to request user feedback when the prompt is unclear and before marking the task as completed.
-
-## 🚀 Usage Tips
-
-### 📝 Code Sharing Workflow
-
-1. Copy code snippets to your clipboard
-2. Open the feedback interface via the AI assistant
-3. Click "插入代码" (Insert Code) button or press Alt+C
-4. Code is automatically formatted and inserted as:
-
-```
-your clipboard content
+```json
+{
+  "mcpServers": {
+    "cursor-usage-opt": {
+      "command": "uv",
+      "args": ["--directory", "/path/to/cursor-usage-opt-mcp", "run", "server.py"],
+      "timeout": 600,
+      "autoApprove": ["cursor_usage_opt"]
+    }
+  }
+}
 ```
 
-5. Add additional context or instructions
-6. Submit with Ctrl+Enter or click "再次发送请求"
+> **注意：** 请将 `/path/to/cursor-usage-opt-mcp` 替换为您实际的项目路径。
 
-### 🎯 Best Practices
+### 远程服务器配置
 
-- Use predefined options for quick yes/no decisions
-- Leverage the "Insert Code" feature for sharing examples or error messages
-- Take advantage of keyboard shortcuts for faster interaction
-- The interface remembers your preferences across sessions
+对于 SSH 远程服务器使用，添加环境变量配置：
 
-## �� Acknowledgements
+```json
+{
+  "mcpServers": {
+    "cursor-usage-opt": {
+      "command": "uv",
+      "args": ["--directory", "/path/to/cursor-usage-opt-mcp", "run", "server.py"],
+      "timeout": 600,
+      "autoApprove": ["cursor_usage_opt"],
+      "env": {
+        "FEEDBACK_WEB_HOST": "0.0.0.0",
+        "FEEDBACK_WEB_PORT": "8080"
+      }
+    }
+  }
+}
+```
 
-Developed by Fábio Ferreira ([@fabiomlferreira](https://x.com/fabiomlferreira)).
+### SSH 端口转发
 
-Enhanced by Pau Oliva ([@pof](https://x.com/pof)) with ideas from Tommy Tong's [interactive-mcp](https://github.com/ttommyth/interactive-mcp).
+```bash
+# 建立端口转发
+ssh -L 8080:localhost:8080 user@remote_server
 
-Further enhanced with Chinese language support and code integration features.
+# 在本地浏览器访问
+http://localhost:8080
+```
+
+### AI 助手规则配置
+
+在您的 AI 助手中添加以下规则（推荐在 Cursor 设置 > 规则 > 用户规则中）：
+
+```
+# MCP Interactive Feedback 规则
+1. 在执行重要任务前，使用 cursor_usage_opt 工具向用户确认需求和细节
+2. 当需要澄清用户意图时，调用 cursor_usage_opt 获取更多信息
+3. 完成阶段性任务后，使用 cursor_usage_opt 询问用户反馈和下一步计划
+4. 收到用户反馈后，根据反馈内容调整后续行为
+5. 只有在用户明确表示满意或结束时，才停止交互循环
+```
+
+## 🚀 使用方法
+
+### 智能模式切换
+
+服务器会根据环境自动选择最佳界面模式：
+
+- **🖥️ 本地环境：** 启动 Apple 风格 GUI 界面
+- **🌐 远程环境：** 启动 Web 浏览器界面
+- **🔄 持续模式：** Web 界面支持实时内容更新
+
+### 操作流程
+
+1. **AI 发起请求：** AI 助手调用 `cursor_usage_opt` 工具
+2. **界面自动打开：** 根据环境显示 GUI 或 Web 界面
+3. **查看内容：** 阅读 AI 的问题（支持 Markdown 渲染）
+4. **提供反馈：**
+   - 选择预定义选项（支持多选）
+   - 输入自定义文本反馈
+   - 使用"插入代码"功能分享代码片段
+   - **空输入提交：** 持续模式下无输入时自动结束
+5. **提交反馈：** 点击提交或使用快捷键 Ctrl+Enter
+6. **AI 继续处理：** 基于您的反馈继续执行任务
+
+### 持续模式特性
+
+- **实时更新：** 页面每 2 秒检查新内容，自动刷新显示
+- **智能关闭：** 多种关闭策略适应不同场景
+  - 初始无内容：立即关闭
+  - 运行中无输入：用户确认后关闭
+  - 手动关闭：提供关闭按钮
+- **状态管理：** 清晰的"有内容"↔"无内容"状态切换
+
+### 界面特色
+
+- **🍎 Apple 设计语言：** 深色主题，圆角设计，系统蓝色
+- **📝 优化字体：** SF Pro 字体系统，22px 主体/20px 代码大字号显示
+- **⌨️ 快捷键支持：** Ctrl+Enter 提交，Alt+C 插入代码
+- **📱 响应式布局：** Web 版本适配各种屏幕尺寸
+- **🔄 智能关闭：** 多策略自动关闭，避免资源浪费
+
+## 🧪 测试
+
+运行综合测试工具验证安装：
+
+```bash
+uv run python test.py
+```
+
+**测试选项：**
+
+```
+┌─────────────────────────────────────────────┐
+│  1. 🖥️  GUI模式测试 (推荐)                │
+│  2. 🌐  Web模式测试                        │
+│  3. 🔧  MCP服务器测试                      │
+│  4. 🚀  运行所有测试                       │
+│  0. 🚪  退出                              │
+└─────────────────────────────────────────────┘
+```
+
+**测试内容：**
+
+- **🖥️ GUI 模式：** Apple 风格界面、字体渲染、交互功能
+- **🌐 Web 模式：** 浏览器界面、持续模式、自动更新、智能关闭
+- **🔧 MCP 服务器：** 环境检测、工具调用、反馈处理
+- **🚀 综合测试：** 完整功能验证和兼容性检查
+
+## 🔧 故障排除
+
+### 常见问题
+
+| 问题               | 解决方案                                                    |
+| ------------------ | ----------------------------------------------------------- |
+| **GUI 无法启动**   | 检查图形环境和 PySide6 安装：`uv add pyside6`               |
+| **Web 端口冲突**   | 修改环境变量：`FEEDBACK_WEB_PORT=8081`                      |
+| **中文输入异常**   | 确保系统安装中文输入法（如 fcitx5）                         |
+| **SSH 连接失败**   | 检查端口转发：`ssh -L 8080:localhost:8080 user@host`        |
+| **依赖安装失败**   | 更新 uv：`curl -LsSf https://astral.sh/uv/install.sh \| sh` |
+| **持续模式不更新** | 检查浏览器控制台，确认轮询请求正常                          |
+| **页面无法关闭**   | 刷新页面或检查 JavaScript 控制台错误                        |
+
+### 调试模式
+
+```bash
+# 查看详细日志
+PYTHONPATH=. uv run python server.py
+
+# 测试特定模式
+uv run python feedback_ui.py  # GUI 模式
+uv run python web_ui.py       # Web 模式
+
+# 调试持续模式
+# 在浏览器开发者工具中查看控制台输出
+# 检查 /api/config 轮询请求和响应
+```
+
+### 持续模式调试
+
+如果持续模式自动更新不工作：
+
+1. **检查轮询请求**：浏览器开发者工具 → 网络标签 → 查看每 2 秒的 `/api/config` 请求
+2. **检查控制台**：开发者工具 → 控制台 → 查看 JavaScript 错误或状态信息
+3. **验证状态变化**：确认服务器端 `has_content` 状态正确切换
+4. **手动刷新**：如果自动更新失败，手动刷新页面重新同步状态
+
+## 🆕 最新改进
+
+### v1.2 功能增强
+
+- **🎯 智能关闭策略**：
+
+  - 初始无内容时立即关闭持续模式
+  - 运行中无输入提交时优雅结束
+  - 手动关闭按钮支持
+
+- **🔄 持续模式优化**：
+
+  - 每 2 秒轮询检查内容更新
+  - 自动状态切换和页面刷新
+  - 清晰的状态提示和反馈
+
+- **🎨 界面美化**：
+
+  - 测试菜单表格化显示
+  - 字体大小统一优化（22px 主体/20px 代码）
+  - Apple 风格设计语言完善
+
+- **🧪 测试完善**：
+  - 规整的测试界面布局
+  - 完整的持续模式测试流程
+  - 详细的调试和故障排除指南
+
+## 📋 项目信息
+
+### 技术栈
+
+- **后端：** Python 3.11+, FastMCP, Flask
+- **GUI：** PySide6 (Qt6)
+- **Web：** HTML5, CSS3, JavaScript
+- **包管理：** uv, pyproject.toml
+- **渲染：** Markdown, Pygments
+
+### 项目结构
+
+```
+cursor-usage-opt-mcp/
+├── server.py          # MCP 服务器主程序
+├── feedback_ui.py     # GUI 界面实现
+├── web_ui.py          # Web 界面实现
+├── test.py            # 综合测试工具
+├── pyproject.toml     # 项目配置和依赖
+└── README.md          # 项目文档
+```
+
+## 🙏 致谢
+
+本项目基于以下优秀工作：
+
+- **Fábio Ferreira** 和 **Pau Oliva** 的原始 MCP 实现
+- **Tommy Tong** 的 [interactive-mcp](https://github.com/ttommyth/interactive-mcp) 项目创意
+- **Apple** 的设计语言和字体系统
+- **MCP 协议** 的标准化工作
+
+## 📄 许可证
+
+本项目采用开源许可证，详见 [LICENSE](LICENSE) 文件。

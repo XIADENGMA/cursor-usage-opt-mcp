@@ -1,11 +1,15 @@
 [project]
-name = "interactive-feedback"
-version = "0.1.1"
-description = "MCP server for interactive user feedback and command execution in AI-assisted development, by Fábio Ferreira and Pau Oliva."
+name = "cursor-usage-opt-mcp"
+version = "1.0.0"
+description = "Simple MCP server for interactive user feedback in AI-assisted development tools."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "fastmcp>=2.0.0",
-    "psutil>=7.0.0",
-    "pyside6>=6.8.2.1",
+    "pyside6>=6.8.0",
+    "flask>=2.3.0",
+    "flask-cors>=4.0.0",
+    "markdown>=3.5.0",
+    "pygments>=2.16.0",
+    "requests>=2.31.0",
 ]
